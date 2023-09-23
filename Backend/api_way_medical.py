@@ -17,6 +17,6 @@ from werkzeug.security import check_password_hash
 medical_api = Blueprint("medical_api", __name__)
 
 
-@medical_api.route("/home", methods=["GET", "POST"])
+@medical_api.route("/add", methods=["GET", "POST"])
 def home():
     return "hello"

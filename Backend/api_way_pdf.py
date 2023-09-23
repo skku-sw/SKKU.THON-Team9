@@ -1,0 +1,105 @@
+import boto3
+from request_model import (
+    aws_access_key_id,
+    aws_secret_access_key,
+    region_name,
+    s3_bucket_name,
+    image_path
+)
+from flask import (
+    Blueprint,
+    jsonify,
+    request,
+    session,
+    redirect,
+    url_for,
+    render_template_string,
+)
+import os
+from db_model import UserInfo, to_dict, DoctorInfo, MedicalHistory
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from werkzeug.security import check_password_hash
+from request_model import (
+    login_request_model,
+    register_request_model,
+    upload_request_model,
+)
+from docx import Document
+from docx2pdf import convert
+
+# boto3 클라이언트 생성
+s3_client = boto3.client(
+    "s3",
+    aws_access_key_id=aws_access_key_id,
+    aws_secret_access_key=aws_secret_access_key,
+    region_name=region_name,
+)
+
+pdf_api = Blueprint("pdf_api", __name__)
+
+
+@pdf_api.route("/upload_diagnosis", methods=["POST"])
+def generate_and_upload():
+    try:
+        data = request.get_json()
+        # 1. 입력받은 데이터 유효성 검사
+        if not all(field in data for field in upload_request_model):
+            return jsonify({"msg": "Missing or invalid data."}), 400
+
+        # 2. DB에 넣기
+        user = UserInfo.query.filter_by(patient_id=data["patient_id"]).first()
+        if not user:
+            return jsonify({"msg": "User Not Found"}), 404
+
+        doctor = DoctorInfo.query.filter_by(
+            license_number=data["license_number"]
+        ).first()
+        if not doctor:
+            doctor = DoctorInfo(
+                license_number=data["license_number"],
+                medical_institution=data["medical_institution"],
+                doctor_name=data["doctor_name"],
+            )
+
+        medical_history = MedicalHistory(
+            patient_id=data["patient_id"],
+            license_number=data["license_number"],
+            diagnosis_code=data["diagnosis_code"],
+            onset_date=data["onset_date"],
+            diagnosis_date=data["diagnosis_date"],
+            prognosis=data["prognosis"],
+            hospitalization_dates=data["hospitalization_dates"],
+        )
+
+        # 3. Word template에서 객체 가져오기
+        doc = Document("template.docx")
+
+        # 4. 템플릿의 Placeholder를 DB에서 가져온 값으로 대체
+        for paragraph in doc.paragraphs:
+            for run in paragraph.runs:
+                if "{name}" in paragraph.text:
+                    paragraph.text = paragraph.text.replace("{name}", user.full_name)
+        # 5. Word 문서 임시 저장
+        temp_docx_path = "temp.docx"
+        doc.save(temp_docx_path)
+        # 6. Word를 PDF로 변환
+        temp_pdf_path = f"{medical_history.patient_id}_{medical_history.license_number}_{medical_history.diagnosis_date}.pdf"
+        convert(temp_docx_path, temp_pdf_path)
+        # 7. PDF를 S3에 업로드
+        with open(temp_pdf_path,"rb") as file:
+            s3_client.upload_fileobj(file,s3_bucket_name,"image/"+temp_pdf_path)
+
+        # DB 저장
+        medical_history.filename = image_path+"image/"+temp_pdf_path
+        from app import db_session
+        db_session.merge(doctor)
+        db_session.commit()
+        db_session.merge(medical_history)
+        db_session.commit()
+
+        # 8. 파일 기록 지우기
+        os.remove(temp_docx_path)
+        os.remove(temp_pdf_path)
+        return jsonify({"msg": "Upload Success"}), 200
+    except Exception as e:
+        return jsonify({"msg": str(e)}), 401

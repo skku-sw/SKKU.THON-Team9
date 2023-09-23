@@ -40,14 +40,15 @@ class DoctorInfo(Base):
 class MedicalHistory(Base):
     __tablename__ = "medical_history"
 
-    index = Column(Integer, Sequence("index_seq"), primary_key=True)
+    index = Column(Integer, primary_key=True,autoincrement=True)
     patient_id = Column(String(255), ForeignKey("user_info.patient_id"))
     license_number = Column(String(255), ForeignKey("doctor_info.license_number"))
     diagnosis_code = Column(String(255))
-    onset_date = Column(Date)
-    diagnosis_date = Column(Date)
-    prognosis = Column(Date, nullable=True)
-    hospitalization_dates = Column(String(255))
+    onset_date = Column(Date) # 발병일
+    diagnosis_date = Column(Date) #진단일
+    prognosis = Column(Date, nullable=True) # 진단내용
+    hospitalization_dates = Column(Date) #입원일
+    filename = Column(String(255)) #의료 pdf
 
 
 def initialize_db(app):
