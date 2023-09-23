@@ -55,7 +55,7 @@ jobs:
     - name: deploy to s3
       uses: jakejarvis/s3-sync-action@master
       with:
-        args: --acl public-read --follow-symlinks --delete
+        args: --follow-symlinks --delete
       env:
         AWS_S3_BUCKET: skkuthon1
         AWS_ACCESS_KEY_ID: AKIAWUAT2OPE4IMKYDEM
