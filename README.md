@@ -26,7 +26,7 @@
 
    ```bash
 
-   cd  Deep_Plant1
+   cd  SKKU.THON Team9
 
    docker  build  -t  flask-app  .
 
@@ -36,10 +36,10 @@
 
    ```bash
 
-   docker  run  -p  8080:8080  flask-app
+   docker  run  -p  8080:5000  flask-app
 
    ```
 
 5. Local Server 접속
 
-   - https://localhosts:5000
+   - https://localhosts:8080
