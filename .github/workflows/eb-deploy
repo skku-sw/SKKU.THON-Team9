@@ -1,0 +1,33 @@
+name: Deploy to AWS Elastic Beanstalk
+
+on:
+  push:
+    branches:
+      - main  # Or whatever branch you'd like to deploy from
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install awsebcli  # Install AWS Elastic Beanstalk CLI
+
+    - name: Deploy to Elastic Beanstalk
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AKIAWUAT2OPE4IMKYDEM }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.v4ZXknputWNUtPNPPYXwytKP/ybnRV70PqUkKL+O }}
+      run: |
+        eb init -p python-3.8 your-application-name --region your-region-id
+        eb deploy
