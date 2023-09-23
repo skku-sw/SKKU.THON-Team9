@@ -30,7 +30,7 @@ const AddDiagnosis = () => {
       hospitalization_dates: ref9.current.value,
     });
 
-    fetch("/pdf/upload_diagnosis", {
+    fetch(`127.0.0.1:5000/pdf/upload_diagnosis`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

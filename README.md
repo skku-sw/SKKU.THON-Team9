@@ -29,14 +29,17 @@
 
 ## Dev Server 실행 방법
 ### Frontend
-1. git clone <this repo>
-2. Frontend 작업 폴더로 들어가 프로젝트에 필요한 packages 다운로드
-  ```bash
-  npm install
-  ```
-3. .env 파일 작성
-4. 개발 서버 실행
-   ```bash
+1. ```bash
+   git clone https://github.com/skku-sw/SKKU.THON-Team9.git
+   ```
+3. ```bash
+   cd SKKU.THON-Team9/skkuthon-team-9
+   ```
+4. ```bash
+   npm install
+   ```
+4. .env 파일 작성
+5. ```bash
    npm run dev
    ```
 
@@ -49,7 +52,12 @@
     ```
 
 ## Production 배포 방법
+### Frontend
+1. **Vercel 접속 및 로그인**
+2. **Github ID와 연동하여 repository 선택하여 import**
+3. 환경 변수 설정하고 Deploy 버튼 클릭
 
+### Backend
 1. **코드 최신 버전 가져오기**:
     ```bash
     git pull origin main
