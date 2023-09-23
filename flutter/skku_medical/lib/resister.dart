@@ -41,435 +41,447 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
-    return loadingOver
-        ? SafeArea(
-            child: Scaffold(
-              backgroundColor: Colors.white,
-              body: SingleChildScrollView(
-                child: Container(
-                  margin: EdgeInsets.all(40),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
+    return WillPopScope(
+      onWillPop: () async {
+        // Navigate back to the login screen when the back button is pressed.
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) =>
+                Login(), // Replace 'Login()' with your login screen widget.
+          ),
+        );
+        return false; // Prevent the default back button behavior.
+      },
+      child: loadingOver
+          ? SafeArea(
+              child: Scaffold(
+                backgroundColor: Colors.white,
+                body: SingleChildScrollView(
+                  child: Container(
+                    margin: EdgeInsets.all(40),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
 // ---이름--- //
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          '이름*',
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      TextField(
-                        controller: _nameTextEditController,
-                        keyboardType: TextInputType.emailAddress,
-                        onChanged: (value) {
-                          name = value;
-                        },
-                        decoration: InputDecoration(
-                          hintText: '  이름 입력',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15.0),
-                          ),
-                        ),
-                        style: TextStyle(
-                          fontSize: 14,
-                        ),
-                      ),
-                      SizedBox(height: 20),
-
-// ---주민등록번호--- //
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          '주민등록번호*',
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: TextField(
-                              controller: _idFirstTextEditController,
-                              keyboardType:
-                                  TextInputType.number, // 숫자 입력 타입으로 변경
-                              maxLength: 6,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    RegExp('[0-9]'))
-                              ],
-                              onChanged: (value) {
-                                patientIdFirst = value;
-                              },
-                              decoration: InputDecoration(
-                                counterText: '',
-                                hintText: '  주민등록번호 앞자리 입력',
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15.0),
-                                ),
-                              ),
-                              style: TextStyle(
-                                fontSize: 14,
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 16),
-                          Expanded(
-                            child: TextField(
-                              controller: _idSecondTextEditController,
-                              keyboardType:
-                                  TextInputType.number, // 숫자 입력 타입으로 변경
-                              maxLength: 7,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    RegExp('[0-9]'))
-                              ],
-                              onChanged: (value) {
-                                patientIdLast = value;
-                              },
-                              decoration: InputDecoration(
-                                counterText: '',
-                                hintText: '  주민등록번호 뒷자리 입력',
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15.0),
-                                ),
-                              ),
-                              style: TextStyle(
-                                fontSize: 14,
-                              ),
-                              obscureText: true, // 입력된 텍스트를 '*'로 가립니다.
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 20),
-
-// ---성별--- //
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          '성별*',
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        children: [
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              minimumSize: Size(100, 40),
-                              primary: isMaleSelected
-                                  ? Color.fromARGB(255, 80, 77, 77)
-                                  : Colors.grey, // 선택 상태에 따라 색상 변경
-                              shape: new RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(8.0),
-                              ),
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                isMaleSelected = !isMaleSelected;
-                                isFemaleSelected = false; // 다른 버튼 선택 해제
-                              });
-                            },
-                            child: Text("남성"),
-                          ),
-                          SizedBox(width: 16),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              minimumSize: Size(100, 40),
-                              primary: isFemaleSelected
-                                  ? Color.fromARGB(255, 80, 77, 77)
-                                  : Colors.grey, // 선택 상태에 따라 색상 변경
-                              shape: new RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(8.0),
-                              ),
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                isFemaleSelected = !isFemaleSelected;
-                                isMaleSelected = false; // 다른 버튼 선택 해제
-                              });
-                            },
-                            child: Text("여성"),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 20),
-
-// ---비밀번호--- //
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          '비밀번호*',
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      TextField(
-                        controller: _passwordTextEditController,
-                        keyboardType: TextInputType.emailAddress,
-                        onChanged: (value) {
-                          pw = value;
-                        },
-                        decoration: InputDecoration(
-                          hintText: '  비밀번호 입력',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15.0),
-                          ),
-                        ),
-                        style: TextStyle(
-                          fontSize: 14,
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      TextField(
-                        controller: _repasswordTextEditController,
-                        keyboardType: TextInputType.emailAddress,
-                        onChanged: (value) {
-                          repw = value;
-                        },
-                        decoration: InputDecoration(
-                          hintText: '  비밀번호 재입력',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15.0),
-                          ),
-                        ),
-                        style: TextStyle(
-                          fontSize: 14,
-                        ),
-                      ),
-                      SizedBox(height: 20),
-
-// ---약관--- //
-                      Row(
-                        children: [
-                          Checkbox(
-                            value: acceptAll,
-                            onChanged: (value) {
-                              setState(() {
-                                acceptAll = value!;
-                                acceptAge = value!;
-                                acceptPersonal = value!;
-                                acceptProgram = value!;
-                              });
-                            },
-                            checkColor: Color.fromARGB(255, 255, 255, 255),
-                            activeColor: Color.fromARGB(255, 80, 77, 77),
-                          ),
-                          Text(
-                            "약관 모두 동의",
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            '이름*',
+                            textAlign: TextAlign.left,
                             style: TextStyle(
-                              fontSize: 17,
+                              fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                        ],
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Color.fromARGB(255, 156, 155, 155),
-                          ),
-                          borderRadius: BorderRadius.circular(15.0),
                         ),
-                        child: Column(
+                        SizedBox(height: 10),
+                        TextField(
+                          controller: _nameTextEditController,
+                          keyboardType: TextInputType.emailAddress,
+                          onChanged: (value) {
+                            name = value;
+                          },
+                          decoration: InputDecoration(
+                            hintText: '  이름 입력',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                          ),
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                        SizedBox(height: 20),
+
+// ---주민등록번호--- //
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            '주민등록번호*',
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        Row(
                           children: [
-                            SizedBox(
-                              height: 10,
+                            Expanded(
+                              child: TextField(
+                                controller: _idFirstTextEditController,
+                                keyboardType:
+                                    TextInputType.number, // 숫자 입력 타입으로 변경
+                                maxLength: 6,
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp('[0-9]'))
+                                ],
+                                onChanged: (value) {
+                                  patientIdFirst = value;
+                                },
+                                decoration: InputDecoration(
+                                  counterText: '',
+                                  hintText: '  주민등록번호 앞자리 입력',
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(15.0),
+                                  ),
+                                ),
+                                style: TextStyle(
+                                  fontSize: 14,
+                                ),
+                              ),
                             ),
-                            Row(
-                              children: [
-                                SizedBox(
-                                  height: 35,
-                                  width: 50,
-                                  child: Transform.scale(
-                                    scale: 0.6,
-                                    child: Checkbox(
-                                      value: acceptAge,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          acceptAge = value!;
-                                          if (!acceptAge) {
-                                            acceptAll = false;
-                                          }
-                                          if (acceptAge &&
-                                              acceptPersonal &&
-                                              acceptProgram) {
-                                            acceptAll = true;
-                                          }
-                                        });
-                                      },
-                                      checkColor:
-                                          Color.fromARGB(255, 255, 255, 255),
-                                      activeColor:
-                                          Color.fromARGB(255, 80, 77, 77),
-                                    ),
+                            SizedBox(width: 16),
+                            Expanded(
+                              child: TextField(
+                                controller: _idSecondTextEditController,
+                                keyboardType:
+                                    TextInputType.number, // 숫자 입력 타입으로 변경
+                                maxLength: 7,
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp('[0-9]'))
+                                ],
+                                onChanged: (value) {
+                                  patientIdLast = value;
+                                },
+                                decoration: InputDecoration(
+                                  counterText: '',
+                                  hintText: '  주민등록번호 뒷자리 입력',
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(15.0),
                                   ),
                                 ),
-                                Text(
-                                  "만 14세 이상입니다",
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    height: 1.3,
-                                  ),
+                                style: TextStyle(
+                                  fontSize: 14,
                                 ),
-                              ],
+                                obscureText: true, // 입력된 텍스트를 '*'로 가립니다.
+                              ),
                             ),
-                            Row(
-                              children: [
-                                SizedBox(
-                                  height: 35,
-                                  width: 50,
-                                  child: Transform.scale(
-                                    scale: 0.6,
-                                    child: Checkbox(
-                                      value: acceptProgram,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          acceptProgram = value!;
-                                          if (!acceptProgram) {
-                                            acceptAll = false;
-                                          }
-                                          if (acceptAge &&
-                                              acceptPersonal &&
-                                              acceptProgram) {
-                                            acceptAll = true;
-                                          }
-                                        });
-                                      },
-                                      checkColor:
-                                          Color.fromARGB(255, 255, 255, 255),
-                                      activeColor:
-                                          Color.fromARGB(255, 80, 77, 77),
-                                    ),
-                                  ),
-                                ),
-                                Text(
-                                  "SKKU-MEDICAL 약관 동의",
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    height: 1.3,
-                                  ),
-                                ),
-                              ],
+                          ],
+                        ),
+                        SizedBox(height: 20),
+
+// ---성별--- //
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            '성별*',
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
                             ),
-                            Row(
-                              children: [
-                                SizedBox(
-                                  height: 35,
-                                  width: 50,
-                                  child: Transform.scale(
-                                    scale: 0.6,
-                                    child: Checkbox(
-                                      value: acceptPersonal,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          acceptPersonal = value!;
-                                          if (!acceptPersonal) {
-                                            acceptAll = false;
-                                          }
-                                          if (acceptAge &&
-                                              acceptPersonal &&
-                                              acceptProgram) {
-                                            acceptAll = true;
-                                          }
-                                        });
-                                      },
-                                      checkColor:
-                                          Color.fromARGB(255, 255, 255, 255),
-                                      activeColor:
-                                          Color.fromARGB(255, 80, 77, 77),
-                                    ),
-                                  ),
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        Row(
+                          children: [
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                minimumSize: Size(100, 40),
+                                primary: isMaleSelected
+                                    ? Color.fromARGB(255, 80, 77, 77)
+                                    : Colors.grey, // 선택 상태에 따라 색상 변경
+                                shape: new RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(8.0),
                                 ),
-                                Text(
-                                  "개인정보수집 및 이용에 대한 안내",
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                  ),
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  isMaleSelected = !isMaleSelected;
+                                  isFemaleSelected = false; // 다른 버튼 선택 해제
+                                });
+                              },
+                              child: Text("남성"),
+                            ),
+                            SizedBox(width: 16),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                minimumSize: Size(100, 40),
+                                primary: isFemaleSelected
+                                    ? Color.fromARGB(255, 80, 77, 77)
+                                    : Colors.grey, // 선택 상태에 따라 색상 변경
+                                shape: new RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(8.0),
                                 ),
-                                Flexible(
-                                  child: Container(
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  isFemaleSelected = !isFemaleSelected;
+                                  isMaleSelected = false; // 다른 버튼 선택 해제
+                                });
+                              },
+                              child: Text("여성"),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 20),
+
+// ---비밀번호--- //
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            '비밀번호*',
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        TextField(
+                          controller: _passwordTextEditController,
+                          keyboardType: TextInputType.emailAddress,
+                          onChanged: (value) {
+                            pw = value;
+                          },
+                          decoration: InputDecoration(
+                            hintText: '  비밀번호 입력',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                          ),
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        TextField(
+                          controller: _repasswordTextEditController,
+                          keyboardType: TextInputType.emailAddress,
+                          onChanged: (value) {
+                            repw = value;
+                          },
+                          decoration: InputDecoration(
+                            hintText: '  비밀번호 재입력',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                          ),
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                        SizedBox(height: 20),
+
+// ---약관--- //
+                        Row(
+                          children: [
+                            Checkbox(
+                              value: acceptAll,
+                              onChanged: (value) {
+                                setState(() {
+                                  acceptAll = value!;
+                                  acceptAge = value!;
+                                  acceptPersonal = value!;
+                                  acceptProgram = value!;
+                                });
+                              },
+                              checkColor: Color.fromARGB(255, 255, 255, 255),
+                              activeColor: Color.fromARGB(255, 80, 77, 77),
+                            ),
+                            Text(
+                              "약관 모두 동의",
+                              style: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Color.fromARGB(255, 156, 155, 155),
+                            ),
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                children: [
+                                  SizedBox(
                                     height: 35,
-                                    child: Align(
-                                      alignment: Alignment.topRight,
-                                      child: TextButton(
-                                        onPressed: Finish,
-                                        child: Text(
-                                          "내용보기",
-                                          style: TextStyle(
-                                            decoration:
-                                                TextDecoration.underline,
-                                            color: Color(0xFFA3A3A3),
+                                    width: 50,
+                                    child: Transform.scale(
+                                      scale: 0.6,
+                                      child: Checkbox(
+                                        value: acceptAge,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            acceptAge = value!;
+                                            if (!acceptAge) {
+                                              acceptAll = false;
+                                            }
+                                            if (acceptAge &&
+                                                acceptPersonal &&
+                                                acceptProgram) {
+                                              acceptAll = true;
+                                            }
+                                          });
+                                        },
+                                        checkColor:
+                                            Color.fromARGB(255, 255, 255, 255),
+                                        activeColor:
+                                            Color.fromARGB(255, 80, 77, 77),
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    "만 14세 이상입니다",
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      height: 1.3,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  SizedBox(
+                                    height: 35,
+                                    width: 50,
+                                    child: Transform.scale(
+                                      scale: 0.6,
+                                      child: Checkbox(
+                                        value: acceptProgram,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            acceptProgram = value!;
+                                            if (!acceptProgram) {
+                                              acceptAll = false;
+                                            }
+                                            if (acceptAge &&
+                                                acceptPersonal &&
+                                                acceptProgram) {
+                                              acceptAll = true;
+                                            }
+                                          });
+                                        },
+                                        checkColor:
+                                            Color.fromARGB(255, 255, 255, 255),
+                                        activeColor:
+                                            Color.fromARGB(255, 80, 77, 77),
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    "SKKU-MEDICAL 약관 동의",
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      height: 1.3,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  SizedBox(
+                                    height: 35,
+                                    width: 50,
+                                    child: Transform.scale(
+                                      scale: 0.6,
+                                      child: Checkbox(
+                                        value: acceptPersonal,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            acceptPersonal = value!;
+                                            if (!acceptPersonal) {
+                                              acceptAll = false;
+                                            }
+                                            if (acceptAge &&
+                                                acceptPersonal &&
+                                                acceptProgram) {
+                                              acceptAll = true;
+                                            }
+                                          });
+                                        },
+                                        checkColor:
+                                            Color.fromARGB(255, 255, 255, 255),
+                                        activeColor:
+                                            Color.fromARGB(255, 80, 77, 77),
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    "개인정보수집 및 이용에 대한 안내",
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                    ),
+                                  ),
+                                  Flexible(
+                                    child: Container(
+                                      height: 35,
+                                      child: Align(
+                                        alignment: Alignment.topRight,
+                                        child: TextButton(
+                                          onPressed: Finish,
+                                          child: Text(
+                                            "내용보기",
+                                            style: TextStyle(
+                                              decoration:
+                                                  TextDecoration.underline,
+                                              color: Color(0xFFA3A3A3),
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                          ],
+                                ],
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 30,
-                      ),
+                        SizedBox(
+                          height: 30,
+                        ),
 
-                      ElevatedButton(
-                        onPressed: () {
-                          Finish();
-                        },
-                        child: Text(
-                          '가입하기',
-                          style: TextStyle(
-                            fontSize: 19,
-                            fontWeight: FontWeight.bold,
+                        ElevatedButton(
+                          onPressed: () {
+                            Finish();
+                          },
+                          child: Text(
+                            '가입하기',
+                            style: TextStyle(
+                              fontSize: 19,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            fixedSize:
+                                Size(MediaQuery.of(context).size.width, 55),
+                            primary: Color.fromARGB(255, 80, 77, 77),
+                            shape: new RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(40.0),
+                            ),
                           ),
                         ),
-                        style: ElevatedButton.styleFrom(
-                          fixedSize:
-                              Size(MediaQuery.of(context).size.width, 55),
-                          primary: Color.fromARGB(255, 80, 77, 77),
-                          shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(40.0),
-                          ),
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
+            )
+          : Center(
+              child: Image.asset(
+                'assets/loading.png',
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                fit: BoxFit.fill,
+              ),
             ),
-          )
-        : Center(
-            child: Image.asset(
-              'assets/loading.png',
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              fit: BoxFit.fill,
-            ),
-          );
+    );
   }
 
   void updateServer() async {
