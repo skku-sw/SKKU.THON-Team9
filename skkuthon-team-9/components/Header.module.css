@@ -2,29 +2,32 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1% 3%;
+  padding: 2% 3%;
   /* background-color:; */
 }
 
 .logoWrapper {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
 }
 
 .logoImg {
-  width: 48px;
+  /* width: 34px; */
+  width: 10%;
+  margin-right: 6px;
 }
 
 .logoTitle {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   font-weight: bold;
 }
 
 .loginBtn {
-  width: 100px;
-  height: 40px;
+  width: 80px;
+  height: 36px;
   background-color: cornflowerblue;
   border: none;
-  border-radius: 10%;
+  border-radius: 12%;
+  font-size: 1rem;
 }
