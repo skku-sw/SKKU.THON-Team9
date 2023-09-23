@@ -5,7 +5,7 @@ const Header = () => {
   return (
     <header>
       <div>
-        <FontAwesomeIcon icon={faUserNurse} />
+        {/* <FontAwesomeIcon icon={faUserNurse} /> */}
         <span>SKKU Medical</span>
       </div>
       <div>
