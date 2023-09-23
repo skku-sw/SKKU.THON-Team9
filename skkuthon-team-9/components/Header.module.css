@@ -24,10 +24,11 @@
 }
 
 .loginBtn {
-  width: 80px;
+  padding: 8px 20px;
   height: 36px;
   background-color: cornflowerblue;
   border: none;
-  border-radius: 12%;
+  border-radius: 14%;
   font-size: 1rem;
+  color: black;
 }
