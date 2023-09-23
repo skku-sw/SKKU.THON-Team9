@@ -9,25 +9,14 @@ export default function Home() {
   const [diagnosis, setDiagnosis] = useState();
 
   useEffect(() => {
-    fetch("http://43.202.67.55:5000/user/login", {
-      method: "POST",
+    const token = localStorage.getItem("token");
+
+    fetch("http://43.202.67.55:5000/user/find_medical_history", {
+      method: "GET",
       headers: {
-        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({
-        patient_id: "000001-0000000",
-        password: "skkuthon",
-      }),
     })
-      .then((res) => res.json())
-      .then((data) => {
-        return fetch("http://43.202.67.55:5000/user/find_medical_history", {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${data.access_token}`,
-          },
-        });
-      })
       .then((res) => res.json())
       .then((data) => {
         setDiagnosis(data);
@@ -36,8 +25,6 @@ export default function Home() {
         console.log(err);
       });
   }, []);
-
-  console.log(diagnosis);
 
   if (!diagnosis || diagnosis.length === 0) {
     return (

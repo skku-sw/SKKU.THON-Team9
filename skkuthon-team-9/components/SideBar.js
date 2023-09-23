@@ -1,8 +1,25 @@
 import Image from "next/image";
+import Link from "next/link";
 
 import styles from "./SideBar.module.css";
 
-const SideBar = () => {
+const SideBar = ({ user }) => {
+  if (!user) {
+    return (
+      <div>
+        <Image
+          src="/images/loading-gif.webp"
+          alt="loading gif"
+          width={250}
+          height={250}
+        />
+      </div>
+    );
+  }
+
+  const username = user.full_name;
+  const id = user.patient_id;
+
   return (
     <section className={styles.sidebar}>
       <div className={styles.wrapper}>
@@ -15,9 +32,14 @@ const SideBar = () => {
             height={100}
           />
         </div>
-        <div className={styles.patientInfo}>
-          <span>이성균</span>
-          <span>111111-3333333</span>
+        <div className={styles.infoWrapper}>
+          <div className={styles.patientInfo}>
+            <span>{username}</span>
+            <span className={styles.id}>{id}</span>
+          </div>
+          <Link href="/add-diagnosis">
+            <span className={styles.newDiagnosis}>새 진료 결과 입력</span>
+          </Link>
         </div>
       </div>
     </section>
