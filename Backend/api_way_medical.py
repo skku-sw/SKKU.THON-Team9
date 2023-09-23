@@ -20,6 +20,6 @@ medical_api = Blueprint("medical_api", __name__)
 @medical_api.route("/check_list", methods=["GET", "POST"])
 def check_list():
     try:
-        
+        pass
     except Exception as e:
-        return jsonify({"msg":str(e)}),400
+        return jsonify({"msg": str(e)}), 400
