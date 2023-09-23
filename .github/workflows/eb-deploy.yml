@@ -51,9 +51,9 @@ jobs:
       with:
         args: --acl public-read --follow-symlinks --delete
       env:
-        AWS_S3_BUCKET: ${skkuthon1}
-        AWS_ACCESS_KEY_ID: ${{ AKIAWUAT2OPE4IMKYDEM }}
-        AWS_SECRET_ACCESS_KEY: ${{ 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 }}
+        AWS_S3_BUCKET: skkuthon1
+        AWS_ACCESS_KEY_ID: AKIAWUAT2OPE4IMKYDEM
+        AWS_SECRET_ACCESS_KEY: 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
         AWS_REGION: ap-northeast-2
         SOURCE_DIR: './artifacts'
-        DEST_DIR: 'backend'
+        DEST_DIR: 'backend' ## gg
