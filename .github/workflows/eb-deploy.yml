@@ -4,7 +4,7 @@ name: Upload Python Package
 on:
   push:
     branches: 
-      - main # 제발돼라
+      - main 
 
 # 이벤트가 발생시 해당 작업들 실행
 jobs:
@@ -50,7 +50,7 @@ jobs:
     # 소스 파일 압축
     - name: zip artifacts
       run: zip -r ./artifacts/build.zip ./skkuthon-team-9/pages/_app.js
-    ##
+    
     # AWS S3에 압축파일을 전달하는 설정 및 명령어
     - name: deploy to s3
       uses: jakejarvis/s3-sync-action@master
@@ -62,4 +62,4 @@ jobs:
         AWS_SECRET_ACCESS_KEY: v4ZXknputWNUtPNPPYXwytKP/ybnRV70PqUkKL+O
         AWS_REGION: ap-northeast-2
         SOURCE_DIR: './artifacts'
-        DEST_DIR: 'backend' ## gg
+        DEST_DIR: 'backend' 
