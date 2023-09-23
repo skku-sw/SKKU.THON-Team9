@@ -1,7 +1,12 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Header from "./Header";
 
 const Layout = ({ children }) => {
-  return <div></div>;
+  return (
+    <div>
+      <Header />
+      {children}
+    </div>
+  );
 };
 
 export default Layout;
