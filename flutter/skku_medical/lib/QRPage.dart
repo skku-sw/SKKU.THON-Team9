@@ -1,5 +1,6 @@
 // FirstPage.dart
 import 'package:flutter/material.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class CrossShapePainter extends CustomPainter {
   @override
@@ -89,11 +90,14 @@ class FirstPage extends StatelessWidget {
                       painter: CrossShapePainter(),
                     ),
                   ),
-                  Image.asset(
-                    'assets/sample_image.jpg',
-                    height: 250,
-                    width: 250,
-                    fit: BoxFit.fill,
+                  QrImageView(
+                    data: 'http://localhost:3000',
+                    version: QrVersions.auto,
+                    size: 200.0,
+                    foregroundColor: Colors.white,
+                    embeddedImageStyle: QrEmbeddedImageStyle(
+                      color: Colors.white,
+                    ),
                   ),
                 ],
               ),

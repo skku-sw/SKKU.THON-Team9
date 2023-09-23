@@ -47,31 +47,19 @@ class _MyHomePageState extends State<MyHomePage> {
   late PdfController pdfController;
 
   @override
+  @override
   void initState() {
     super.initState();
-    // 초기에는 전체 항목을 검색 결과로 설정
-    filteredItems = allItems;
-    getfromServer();
+
+    // Initialize pdfController
     pdfController = PdfController(
       document: PdfDocument.openData(InternetFile.get(
           'https://upload.wikimedia.org/wikipedia/commons/8/85/I-20-sample.pdf')),
       initialPage: 1,
     );
-  }
 
-  // 검색어에 따라 리스트를 필터링하는 함수
-  void filterList(String query) {
-    setState(() {
-      filteredItems = allItems
-          .where((item) => item.toLowerCase().contains(query.toLowerCase()))
-          .toList();
-    });
-  }
-
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
-  void _openDrawer() {
-    _scaffoldKey.currentState?.openDrawer();
+    // Fetch data from the server
+    getfromServer();
   }
 
   void getfromServer() async {
@@ -97,6 +85,9 @@ class _MyHomePageState extends State<MyHomePage> {
         data = json.decode(response.body);
 
         print('${data.length}');
+
+        // After fetching data, initialize filteredItems
+        filterList('');
       }
     } catch (e) {
       // Handle exceptions
@@ -121,9 +112,24 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  // 검색어에 따라 리스트를 필터링하는 함수
+  void filterList([String query = "."]) {
+    setState(() {
+      filteredItems = allItems
+          .where((item) => item.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    });
+  }
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  void _openDrawer() {
+    _scaffoldKey.currentState?.openDrawer();
+  }
+
   @override
   Widget build(BuildContext context) {
-    filterList('');
+    filterList('.');
     return Scaffold(
       key: _scaffoldKey,
       body: Column(
@@ -151,14 +157,18 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           Expanded(
-            child: GridView.count(
+            child: GridView.builder(
               padding: EdgeInsets.all(20),
-              crossAxisCount: 2, //1 개의 행에 보여줄 item 개수
-              childAspectRatio: 1 / 1.5, //item 의 가로 1, 세로 2 의 비율
-              mainAxisSpacing: 10, //수평 Padding
-              crossAxisSpacing: 10, //수직 Padding
-              children: List.generate(data.length, (index) {
-                //item 의 반목문 항목 형성
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 1 / 1.5,
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 10,
+              ),
+              itemCount: data
+                  .length, // Use data.length to determine the number of items
+              itemBuilder: (context, index) {
+                // Load and render items on-demand
                 return Container(
                   height: 300,
                   color: Color.fromARGB(255, 240, 242, 255),
@@ -166,53 +176,47 @@ class _MyHomePageState extends State<MyHomePage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SizedBox(
-                          height: 200, //height of button
-                          width: 300, //width of button
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                primary: const Color.fromARGB(255, 255, 255,
-                                    255), //background color of button
-                                side: BorderSide(
-                                    width: 3,
-                                    color: Color.fromARGB(255, 58, 81,
-                                        141)), //border width and color
-                                elevation: 3, //elevation of button
-                                padding: EdgeInsets.all(
-                                    20) //content padding inside button
-                                ),
-                            onPressed: () {
-                              showDialog(
-                                  context: context,
-                                  barrierDismissible: true, // 바깥 영역 터치시 닫을지 여부
-                                  builder: (BuildContext context) {
-                                    pdfController = PdfController(
-                                      document: PdfDocument.openData(
-                                          InternetFile.get(
-                                              data[index]['filename'])),
-                                      initialPage: 1,
-                                    );
-                                    return PdfView(
-                                      builders: PdfViewBuilders<
-                                          DefaultBuilderOptions>(
-                                        options: const DefaultBuilderOptions(),
-                                        documentLoaderBuilder: (_) =>
-                                            const Center(
-                                                child:
-                                                    CircularProgressIndicator()),
-                                        pageLoaderBuilder: (_) => const Center(
-                                            child: CircularProgressIndicator()),
-                                      ),
-                                      controller: pdfController,
-                                    );
-                                  });
-                            },
-                            child: Image.asset(
-                              'assets/pdf.png',
-                              height: 50,
-                              width: 50,
-                              fit: BoxFit.fill,
-                            ),
-                          )),
+                        height: 200,
+                        width: 300,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              padding: EdgeInsets.all(10)),
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              barrierDismissible: true,
+                              builder: (BuildContext context) {
+                                pdfController = PdfController(
+                                  document: PdfDocument.openData(
+                                    InternetFile.get(data[index]['filename']),
+                                  ),
+                                  initialPage: 1,
+                                );
+                                return PdfView(
+                                  builders:
+                                      PdfViewBuilders<DefaultBuilderOptions>(
+                                    options: const DefaultBuilderOptions(),
+                                    documentLoaderBuilder: (_) => const Center(
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                    pageLoaderBuilder: (_) => const Center(
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                  ),
+                                  controller: pdfController,
+                                );
+                              },
+                            );
+                          },
+                          child: Image.asset(
+                            'assets/pdf.png',
+                            height: 50,
+                            width: 50,
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                      ),
                       SizedBox(
                         height: 10,
                       ),
@@ -222,7 +226,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ],
                   ),
                 );
-              }),
+              },
             ),
           ),
         ],
@@ -232,8 +236,13 @@ class _MyHomePageState extends State<MyHomePage> {
           padding: EdgeInsets.zero,
           children: <Widget>[
             UserAccountsDrawerHeader(
-              accountName: Text("John Doe"),
-              accountEmail: Text("johndoe@example.com"),
+              accountName: Text(
+                "의사 리스트",
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              ),
+              accountEmail: Text(""),
               currentAccountPicture: CircleAvatar(
                 backgroundColor: Colors.white,
                 child: Text(
@@ -244,15 +253,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             ListTile(
               leading: Icon(Icons.home),
-              title: Text('Home'),
-              onTap: () {
-                // 메뉴 항목을 선택할 때 수행할 동작 추가
-                Navigator.pop(context); // 메뉴 닫기
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.settings),
-              title: Text('Settings'),
+              title: Text('박건우'),
               onTap: () {
                 // 메뉴 항목을 선택할 때 수행할 동작 추가
                 Navigator.pop(context); // 메뉴 닫기
