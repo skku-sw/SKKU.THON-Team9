@@ -163,8 +163,8 @@ def generate_and_upload():
         doc.save(temp_docx_path)
         # 6. Word를 PDF로 변환
         temp_pdf_path = f"{medical_history.patient_id}_{medical_history.license_number}_{medical_history.diagnosis_date}.pdf"
-        # convert(temp_docx_path, temp_pdf_path)
-        docx_to_pdf(temp_docx_path, temp_pdf_path)
+        convert(temp_docx_path, temp_pdf_path)
+        # docx_to_pdf(temp_docx_path, temp_pdf_path)
         # 7. PDF를 S3에 업로드
         with open(temp_pdf_path, "rb") as file:
             s3_client.upload_fileobj(file, s3_bucket_name, "image/" + temp_pdf_path)
