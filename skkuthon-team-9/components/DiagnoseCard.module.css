@@ -1,3 +1,7 @@
+.pdf:hover {
+  cursor: pointer;
+}
+
 .infoWrapper {
   display: flex;
   flex-direction: column;
