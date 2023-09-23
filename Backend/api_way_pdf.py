@@ -1,4 +1,5 @@
 import boto3
+from datetime import datetime
 from request_model import (
     aws_access_key_id,
     aws_secret_access_key,
@@ -68,13 +69,15 @@ def generate_and_upload():
                 medical_institution=data["medical_institution"],
                 doctor_name=data["doctor_name"],
             )
+        # 오늘 날짜를 가져옵니다.
+        today_date = datetime.today().date()
 
         medical_history = MedicalHistory(
             patient_id=data["patient_id"],
             license_number=data["license_number"],
             diagnosis_code=data["diagnosis_code"],
             onset_date=data["onset_date"],
-            diagnosis_date=data["diagnosis_date"],
+            diagnosis_date=today_date,  # 오늘 날짜로 설정
             prognosis=data["prognosis"],
             hospitalization_dates=data["hospitalization_dates"],
         )
