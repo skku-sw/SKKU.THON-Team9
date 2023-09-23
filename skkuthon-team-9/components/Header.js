@@ -1,15 +1,17 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserNurse } from "@fortawesome/free-solid-svg-icons";
 
+import styles from "./Header.module.css";
+
 const Header = () => {
   return (
-    <header>
-      <div>
-        <FontAwesomeIcon icon={faUserNurse} />
-        <span>SKKU Medical</span>
+    <header className={styles.header}>
+      <div className={styles.logoWrapper}>
+        <FontAwesomeIcon icon={faUserNurse} className={styles.logoImg} />
+        <span className={styles.logoTitle}>SKKU Medical</span>
       </div>
       <div>
-        <button>Login</button>
+        <button className={styles.loginBtn}>Login</button>
       </div>
     </header>
   );
