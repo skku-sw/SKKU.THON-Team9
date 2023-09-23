@@ -40,15 +40,15 @@ class DoctorInfo(Base):
 class MedicalHistory(Base):
     __tablename__ = "medical_history"
 
-    index = Column(Integer, primary_key=True,autoincrement=True)
+    index = Column(Integer, primary_key=True, autoincrement=True)
     patient_id = Column(String(255), ForeignKey("user_info.patient_id"))
     license_number = Column(String(255), ForeignKey("doctor_info.license_number"))
     diagnosis_code = Column(String(255))
-    onset_date = Column(Date) # 발병일
-    diagnosis_date = Column(Date) #진단일
-    prognosis = Column(Date, nullable=True) # 진단내용
-    hospitalization_dates = Column(Date) #입원일
-    filename = Column(String(255)) #의료 pdf
+    onset_date = Column(Date)  # 발병일
+    diagnosis_date = Column(Date)  # 진단일
+    prognosis = Column(Date, nullable=True)  # 진단내용
+    hospitalization_dates = Column(Date)  # 입원일
+    filename = Column(String(255))  # 의료 pdf
 
 
 def initialize_db(app):
@@ -61,7 +61,6 @@ def initialize_db(app):
     )
 
     Base.query = db_session.query_property()
-<<<<<<< Updated upstream
     Base.metadata.create_all(bind=engine)
     return db_session
 
@@ -75,6 +74,3 @@ def to_dict(model_instance, query_instance=None):
     else:
         cols = query_instance.column_descriptions
         return {cols[i]["name"]: model_instance[i] for i in range(len(cols))}
-=======
-    Base.metadata.create_all(bind=engine)
->>>>>>> Stashed changes

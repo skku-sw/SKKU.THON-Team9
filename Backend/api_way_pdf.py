@@ -16,6 +16,10 @@ from flask import (
     render_template_string,
 )
 import os
+import subprocess
+
+# apt-get install libreoffice
+# sudo apt-get install unoconv
 from db_model import UserInfo, to_dict, DoctorInfo, MedicalHistory
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from werkzeug.security import check_password_hash
@@ -36,6 +40,10 @@ s3_client = boto3.client(
 )
 
 pdf_api = Blueprint("pdf_api", __name__)
+
+
+def docx_to_pdf(input_path, output_path):
+    subprocess.check_call(["unoconv", "-f", "pdf", "-o", output_path, input_path])
 
 
 @pdf_api.route("/upload_diagnosis", methods=["POST"])
@@ -149,14 +157,14 @@ def generate_and_upload():
                             text = paragraph.text.replace("{12}", user.patient_id)
                             paragraph.clear()
                             paragraph.add_run(text)
-                      
 
         # 5. Word 문서 임시 저장
         temp_docx_path = "temp.docx"
         doc.save(temp_docx_path)
         # 6. Word를 PDF로 변환
         temp_pdf_path = f"{medical_history.patient_id}_{medical_history.license_number}_{medical_history.diagnosis_date}.pdf"
-        convert(temp_docx_path, temp_pdf_path)
+        # convert(temp_docx_path, temp_pdf_path)
+        docx_to_pdf(temp_docx_path, temp_pdf_path)
         # 7. PDF를 S3에 업로드
         with open(temp_pdf_path, "rb") as file:
             s3_client.upload_fileobj(file, s3_bucket_name, "image/" + temp_pdf_path)
@@ -176,4 +184,3 @@ def generate_and_upload():
         return jsonify({"msg": "Upload Success"}), 200
     except Exception as e:
         return jsonify({"msg": str(e)}), 401
-
