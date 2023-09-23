@@ -4,7 +4,7 @@ name: Upload Python Package
 on:
   push:
     branches: 
-      - main
+      - main # 제발돼라
 
 # 이벤트가 발생시 해당 작업들 실행
 jobs:
