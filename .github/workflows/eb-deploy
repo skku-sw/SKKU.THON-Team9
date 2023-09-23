@@ -26,8 +26,8 @@ jobs:
 
     - name: Deploy to Elastic Beanstalk
       env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AKIAWUAT2OPE4IMKYDEM }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.v4ZXknputWNUtPNPPYXwytKP/ybnRV70PqUkKL+O }}
+        AWS_ACCESS_KEY_ID: ${{ AKIAWUAT2OPE4IMKYDEM }}
+        AWS_SECRET_ACCESS_KEY: ${{ v4ZXknputWNUtPNPPYXwytKP/ybnRV70PqUkKL+O }}
       run: |
         eb init -p python-3.8 your-application-name --region your-region-id
         eb deploy
