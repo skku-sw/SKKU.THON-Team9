@@ -1,6 +1,10 @@
-.main {
+.infoWrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.infoWrapper span::first-child {
+  margin-bottom: 8px;
 }

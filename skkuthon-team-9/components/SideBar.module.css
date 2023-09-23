@@ -1,13 +1,26 @@
 .sidebar {
-  background-color: #aeaeae;
-  padding: 40px 80px;
-  height: 100vh;
+  width: 90%;
+  background-color: #eeeeee;
+  padding: 3%;
+  margin: 4%;
+  border-radius: 8px;
+  box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.15);
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .profileImg {
-  width: 180px;
+  width: 15%;
   border-radius: 50%;
   overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .patientInfo {
@@ -16,7 +29,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
 }
 
 .patientInfo span {
