@@ -29,11 +29,13 @@
 
 ## Dev Server 실행 방법
 ### Frontend
-1. git clone https://github.com/skku-sw/SKKU.THON-Team9.git
-2. ```bash
-   cd skkuthon-team-9
+1. ```bash
+   git clone https://github.com/skku-sw/SKKU.THON-Team9.git
    ```
-3. Frontend 작업 폴더로 들어가 프로젝트에 필요한 packages 다운로드
+3. ```bash
+   cd SKKU.THON-Team9/skkuthon-team-9
+   ```
+4. Frontend 작업 폴더로 들어가 프로젝트에 필요한 packages 다운로드
   ```bash
   npm install
   ```
