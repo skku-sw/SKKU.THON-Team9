@@ -4,7 +4,7 @@ from request_model import (
     aws_secret_access_key,
     region_name,
     s3_bucket_name,
-    image_path
+    image_path,
 )
 from flask import (
     Blueprint,
@@ -75,10 +75,77 @@ def generate_and_upload():
         doc = Document("template.docx")
 
         # 4. 템플릿의 Placeholder를 DB에서 가져온 값으로 대체
-        for paragraph in doc.paragraphs:
-            for run in paragraph.runs:
-                if "{name}" in paragraph.text:
-                    paragraph.text = paragraph.text.replace("{name}", user.full_name)
+        for table in doc.tables:
+            for row in table.rows:
+                for cell in row.cells:
+                    for paragraph in cell.paragraphs:
+                        if "{0}" in paragraph.text:
+                            text = paragraph.text.replace("{0}", user.full_name)
+                            paragraph.clear()
+                            paragraph.add_run(text)
+                        elif "{1}" in paragraph.text:
+                            text = paragraph.text.replace("{1}", user.gender)
+                            paragraph.clear()
+                            paragraph.add_run(text)
+                        elif "{2}" in paragraph.text:
+                            text = paragraph.text.replace(
+                                "{2}", str(user.date_of_birth)
+                            )
+                            paragraph.clear()
+                            paragraph.add_run(text)
+                        elif "{3}" in paragraph.text:
+                            text = paragraph.text.replace("{3}", user.address)
+                            paragraph.clear()
+                            paragraph.add_run(text)
+                        elif "{4}" in paragraph.text:
+                            text = paragraph.text.replace(
+                                "{4}", medical_history.diagnosis_code
+                            )
+                            paragraph.clear()
+                            paragraph.add_run(text)
+                        elif "{5}" in paragraph.text:
+                            text = paragraph.text.replace(
+                                "{5}", str(medical_history.onset_date)
+                            )
+                            paragraph.clear()
+                            paragraph.add_run(text)
+                        elif "{6}" in paragraph.text:
+                            text = paragraph.text.replace(
+                                "{6}", str(medical_history.diagnosis_date)
+                            )
+                            paragraph.clear()
+                            paragraph.add_run(text)
+                        elif "{7}" in paragraph.text:
+                            text = paragraph.text.replace(
+                                "{7}", medical_history.prognosis
+                            )
+                            paragraph.clear()
+                            paragraph.add_run(text)
+                        elif "{8}" in paragraph.text:
+                            text = paragraph.text.replace(
+                                "{8}", str(medical_history.diagnosis_date)
+                            )
+                            paragraph.clear()
+                            run = paragraph.add_run(text)
+                            run.bold = True
+                        elif "{9}" in paragraph.text:
+                            text = paragraph.text.replace(
+                                "{9}", doctor.medical_institution
+                            )
+                            paragraph.clear()
+                            run = paragraph.add_run(text)
+                            run.bold = True
+                        elif "{10}" in paragraph.text:
+                            text = paragraph.text.replace("{10}", doctor.license_number)
+                            paragraph.clear()
+                            run = paragraph.add_run(text)
+                            run.bold = True
+                        elif "{11}" in paragraph.text:
+                            text = paragraph.text.replace("{11}", doctor.doctor_name)
+                            paragraph.clear()
+                            run = paragraph.add_run(text)
+                            run.bold = True
+
         # 5. Word 문서 임시 저장
         temp_docx_path = "temp.docx"
         doc.save(temp_docx_path)
@@ -86,20 +153,20 @@ def generate_and_upload():
         temp_pdf_path = f"{medical_history.patient_id}_{medical_history.license_number}_{medical_history.diagnosis_date}.pdf"
         convert(temp_docx_path, temp_pdf_path)
         # 7. PDF를 S3에 업로드
-        with open(temp_pdf_path,"rb") as file:
-            s3_client.upload_fileobj(file,s3_bucket_name,"image/"+temp_pdf_path)
+        # with open(temp_pdf_path,"rb") as file:
+        #     s3_client.upload_fileobj(file,s3_bucket_name,"image/"+temp_pdf_path)
 
         # DB 저장
-        medical_history.filename = image_path+"image/"+temp_pdf_path
-        from app import db_session
-        db_session.merge(doctor)
-        db_session.commit()
-        db_session.merge(medical_history)
-        db_session.commit()
+        # medical_history.filename = image_path+"image/"+temp_pdf_path
+        # from app import db_session
+        # db_session.merge(doctor)
+        # db_session.commit()
+        # db_session.merge(medical_history)
+        # db_session.commit()
 
         # 8. 파일 기록 지우기
         os.remove(temp_docx_path)
-        os.remove(temp_pdf_path)
+        # os.remove(temp_pdf_path)
         return jsonify({"msg": "Upload Success"}), 200
     except Exception as e:
         return jsonify({"msg": str(e)}), 401
