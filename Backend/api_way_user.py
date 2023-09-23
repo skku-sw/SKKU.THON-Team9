@@ -79,6 +79,24 @@ def register():
         return jsonify(f"msg: {e}")
 
 
+@user_api.route("/get_user", methods=["POST", "GET"])
+@jwt_required()
+def get_user_info():
+    try:
+        # 현재 로그인된 사용자의 ID를 가져옵니다.
+        current_user_id = get_jwt_identity()
+        user = UserInfo.query.filter_by(patient_id=current_user_id).first()
+
+        # 유저가 존재하지 않는 경우
+        if not user:
+            return jsonify({"msg": "User not found."}), 404
+
+        return jsonify(to_dict(user)), 200
+
+    except Exception as e:
+        return jsonify(f"msg: {e}"), 400
+
+
 @user_api.route("/delete", methods=["POST", "GET"])
 @jwt_required()
 def delete_account():
@@ -117,11 +135,14 @@ def get_list():
         return jsonify(f"msg: {e}")
 
 
-@user_api.route("/logout")
+@user_api.route("/logout", methods=["GET", "POST"])
 def logout():
-    session.pop("logged_in", None)
-    session.pop("patient_id", None)
-    return "Successful", 200
+    try:
+        session.pop("logged_in", None)
+        session.pop("patient_id", None)
+        return jsonify({"msg": "Successful"}), 200
+    except Exception as e:
+        return jsonify({"msg": e}), 400
 
 
 @user_api.route("/home", methods=["GET"])
