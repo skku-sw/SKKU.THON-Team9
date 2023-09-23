@@ -1,0 +1,57 @@
+.main {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 50px 0 0;
+}
+
+.banner {
+  margin: 25% 0;
+}
+
+.banner h3 {
+  font-size: 2.5rem;
+  text-align: center;
+}
+
+.banner p {
+  padding: 0 6%;
+  text-align: center;
+  font-size: 1.4rem;
+}
+
+.navigator {
+  padding: 0 6%;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 4%;
+}
+
+.qr,
+.diagnose {
+  position: relative;
+}
+
+.qr span,
+.diagnose span {
+  position: absolute;
+  bottom: 50%;
+  right: 0%;
+  font-weight: bold;
+}
+
+.qr span {
+  left: 4%;
+}
+
+.diagnose span {
+  right: 4%%;
+}
+
+.qrImage,
+.diagnoseImage {
+  opacity: 0.4;
+}
