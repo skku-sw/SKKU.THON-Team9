@@ -28,7 +28,19 @@
     - [Github](https://github.com/)
 
 ## Dev Server 실행 방법
+### Frontend
+1. git clone <this repo>
+2. Frontend 작업 폴더로 들어가 프로젝트에 필요한 packages 다운로드
+  ```bash
+  npm install
+  ```
+3. .env 파일 작성
+4. 개발 서버 실행
+   ```bash
+   npm run dev
+   ```
 
+### Baclemd
 1. [로컬 개발 환경 설정 방법, 예: 가상 환경 설정]
    
 2. Flask의 내장 서버를 사용하여 개발 서버를 실행:
