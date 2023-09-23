@@ -1,25 +1,18 @@
 .header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  padding: 2% 3%;
-  /* background-color:; */
-}
-
-.logoWrapper {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
+  padding: 24px 36px;
+  background-image: linear-gradient(to right, #eeeeff, cornflowerblue 200%);
 }
 
 .logoImg {
-  /* width: 34px; */
-  width: 10%;
+  width: 48px;
   margin-right: 6px;
 }
 
 .logoTitle {
-  font-size: 1.3rem;
+  font-size: 1.8rem;
   font-weight: bold;
 }
 
