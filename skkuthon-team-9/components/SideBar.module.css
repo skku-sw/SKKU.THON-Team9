@@ -45,3 +45,8 @@
   font-size: 1.2rem;
   border-radius: 6px;
 }
+
+.newDiagnosis:hover {
+  cursor: pointer;
+  background-color: cornflowerblue;
+}

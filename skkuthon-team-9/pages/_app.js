@@ -7,7 +7,7 @@ export default function App({ Component, pageProps }) {
   const [user, setUser] = useState();
 
   useEffect(() => {
-    fetch("http://43.202.67.55:5000/user/login", {
+    fetch(`${process.env.NEXT_PUBLIC_API_BASEURL}/user/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -22,7 +22,7 @@ export default function App({ Component, pageProps }) {
         const token = data.access_token;
         localStorage.setItem("token", token);
 
-        fetch("http://43.202.67.55:5000/user/get_user", {
+        fetch(`${process.env.NEXT_PUBLIC_API_BASEURL}/user/get_user`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,

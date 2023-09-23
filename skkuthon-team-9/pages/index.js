@@ -11,7 +11,7 @@ export default function Home() {
   useEffect(() => {
     const token = localStorage.getItem("token");
 
-    fetch("http://43.202.67.55:5000/user/find_medical_history", {
+    fetch(`${process.env.NEXT_PUBLIC_API_BASEURL}/user/find_medical_history`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
