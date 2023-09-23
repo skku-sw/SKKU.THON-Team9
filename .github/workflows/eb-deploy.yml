@@ -43,7 +43,7 @@ jobs:
         cd ..\
         pwd \
     
-    # 폴더 만드는 스탭 gg
+    # 폴더 만드는 스탭
     - name: make artifacts dir
       run: mkdir ./artifacts/
 
