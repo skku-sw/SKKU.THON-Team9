@@ -61,6 +61,7 @@ def initialize_db(app):
     )
 
     Base.query = db_session.query_property()
+<<<<<<< Updated upstream
     Base.metadata.create_all(bind=engine)
     return db_session
 
@@ -74,3 +75,6 @@ def to_dict(model_instance, query_instance=None):
     else:
         cols = query_instance.column_descriptions
         return {cols[i]["name"]: model_instance[i] for i in range(len(cols))}
+=======
+    Base.metadata.create_all(bind=engine)
+>>>>>>> Stashed changes

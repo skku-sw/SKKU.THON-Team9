@@ -1,0 +1,24 @@
+.sidebar {
+  background-color: #aeaeae;
+  padding: 40px 80px;
+  height: 100vh;
+}
+
+.profileImg {
+  width: 180px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.patientInfo {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.4rem;
+}
+
+.patientInfo span {
+  margin-bottom: 4px;
+}
