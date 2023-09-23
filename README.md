@@ -7,6 +7,10 @@
 - 기능
 
 ## 프로젝트에서 사용한 기술
+- **Frontend**:
+  - [Next.js](https://nextjs.org/)
+  - [React.js](https://react.dev/)
+
 - **Backend**:
   - [Flask](https://flask.palletsprojects.com/)
   - [MySQL](https://www.mysql.com/)
@@ -22,6 +26,9 @@
     - [EC2](https://aws.amazon.com/ec2/)
     - [S3](https://aws.amazon.com/s3/)
     - [RDS](https://aws.amazon.com/rds/)
+
+  - [Vercel](https://vercel.com/)
+    - [Github](https://github.com/)
 
 ## Dev Server 실행 방법
 
