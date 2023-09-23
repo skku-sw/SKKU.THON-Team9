@@ -2,15 +2,20 @@
 from flask import Flask
 from db_model import initialize_db
 from api_way import api
+from flask_jwt_extended import JWTManager
 
 app = Flask(__name__)
 
 # SQLAlchemy 설정
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://kimdozz0:1987qpzx!@project.c9zirfty1roz.ap-northeast-2.rds.amazonaws.com:3306/My_database"
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config[
+    "SQLALCHEMY_DATABASE_URI"
+] = "mysql+pymysql://kimdozz0:1987qpzx!@project.c9zirfty1roz.ap-northeast-2.rds.amazonaws.com:3306/My_database"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config["JWT_SECRET_KEY"] = "SKKUTHON"
+jwt = JWTManager(app)
 
-initialize_db(app)
+db_session = initialize_db(app)
 
-app.register_blueprint(api, url_prefix='/api')
+app.register_blueprint(api, url_prefix="/user")
 if __name__ == "__main__":
     app.run(debug=True)
