@@ -1,7 +1,8 @@
 # app.py
 from flask import Flask
 from db_model import initialize_db
-from api_way import api
+from api_way_user import user_api
+from api_way_medical import medical_api
 from flask_jwt_extended import JWTManager
 
 app = Flask(__name__)
@@ -16,6 +17,7 @@ jwt = JWTManager(app)
 
 db_session = initialize_db(app)
 
-app.register_blueprint(api, url_prefix="/user")
+app.register_blueprint(user_api, url_prefix="/user")
+app.register_blueprint(medical_api, url_prefix="/medical")
 if __name__ == "__main__":
     app.run(debug=True)
