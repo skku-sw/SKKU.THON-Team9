@@ -1,10 +1,10 @@
 name: Upload Python Package
 
-# 이벤트 바인딩 : master 브랜치에 push 이벤트 발생 시 실행
+# 이벤트 바인딩 : main 브랜치에 push 이벤트 발생 시 실행
 on:
   push:
     branches: 
-      - master
+      - main
 
 # 이벤트가 발생시 해당 작업들 실행
 jobs:
@@ -17,7 +17,7 @@ jobs:
 
     # 위 작업의 세부 단계 설정
     steps:
-    # 사용할 actioms의 가상머신
+    # 사용할 actions의 가상머신
     - uses: actions/checkout@v2
     
     # 스탭 명
