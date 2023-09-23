@@ -25,15 +25,15 @@ jobs:
     
     - name: run unittest
       run: |
-        cd test
-        python -m unittest test/test.py
+        cd ./test/
+        python -m unittest ./test/test.py
     
     - name: make artifacts dir
       run: mkdir artifacts
 
     - name: zip artifacts
       run: |
-        zip -r artifacts/build.zip app/ appspec.yml
+        zip -r ./artifacts/build.zip app/ appspec.yml
 
     - name: deploy to s3
       uses: jakejarvis/s3-sync-action@master
