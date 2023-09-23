@@ -37,7 +37,7 @@ jobs:
         cd ..\
         pwd \
     
-    # 폴더 만드는 스탭
+    # 폴더 만드는 스탭 gg
     - name: make artifacts dir
       run: mkdir ./artifacts/
 
@@ -57,4 +57,4 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ v4ZXknputWNUtPNPPYXwytKP/ybnRV70PqUkKL+O }}
         AWS_REGION: ap-northeast-2
         SOURCE_DIR: './artifacts'
-        DEST_DIR: 'backen
+        DEST_DIR: 'backend
