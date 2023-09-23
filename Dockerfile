@@ -13,5 +13,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # 파일 컨테이너 복사
 COPY ./Backend/ ./
 
+# Flask 앱이 사용할 포트를 지정
+EXPOSE 5000
+
 # Flask 앱 실행
 CMD ["python","app.py"]
