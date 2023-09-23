@@ -6,14 +6,13 @@
   background-image: linear-gradient(to right, #eeeeff, cornflowerblue 200%);
 }
 
-.logoImg {
-  width: 48px;
-  margin-right: 6px;
-}
-
 .logoTitle {
   font-size: 1.8rem;
   font-weight: bold;
+}
+
+.logoTitle:hover {
+  cursor: pointer;
 }
 
 .loginBtn {

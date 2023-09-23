@@ -4,7 +4,3 @@
   justify-content: center;
   align-items: center;
 }
-
-.infoWrapper span::first-child {
-  margin-bottom: 8px;
-}

@@ -1,14 +1,19 @@
-import Link from "next/link";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserNurse } from "@fortawesome/free-solid-svg-icons";
+import { useRouter } from "next/router";
 
 import styles from "./Header.module.css";
 
 const Header = () => {
+  const router = useRouter();
+
+  const onLogoClick = () => {
+    router.push("/");
+  };
+
   return (
     <header className={styles.header}>
-      <FontAwesomeIcon icon={faUserNurse} className={styles.logoImg} />
-      <span className={styles.logoTitle}>SKKU Medical</span>
+      <span onClick={onLogoClick} className={styles.logoTitle}>
+        SKKU Medical
+      </span>
     </header>
   );
 };
