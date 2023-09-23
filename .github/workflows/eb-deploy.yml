@@ -20,12 +20,12 @@ jobs:
     # 사용할 actions의 가상머신
     - uses: actions/checkout@v2
     
-     - name: Check current directory
+    - name: Check current directory
       run: pwd
 
     - name: List directory contents
       run: ls -la
-      
+
     # 스탭 명
     - name: Set up Python
     # python 가상머신 사용 - 부정확함 
