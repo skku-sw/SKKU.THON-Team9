@@ -1,10 +1,57 @@
+import { useState, useEffect } from "react";
 import Head from "next/head";
 import Image from "next/image";
-import Link from "next/link";
 
+import DiagnoseCard from "@/components/DiagnoseCard";
 import styles from "../styles/Main.module.css";
 
 export default function Home() {
+  const [diagnosis, setDiagnosis] = useState();
+
+  useEffect(() => {
+    fetch("http://43.202.67.55:5000/user/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        patient_id: "000001-0000000",
+        password: "skkuthon",
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        return fetch("http://43.202.67.55:5000/user/find_medical_history", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${data.access_token}`,
+          },
+        });
+      })
+      .then((res) => res.json())
+      .then((data) => {
+        setDiagnosis(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  console.log(diagnosis);
+
+  if (!diagnosis || diagnosis.length === 0) {
+    return (
+      <div className={styles.loading}>
+        <Image
+          src={"/images/loading-gif.webp"}
+          alt="loading gif"
+          width={240}
+          height={240}
+        />
+      </div>
+    );
+  }
+
   return (
     <>
       <Head>
@@ -13,7 +60,15 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={styles.main}></main>
+      <main className={styles.main}>
+        <ul className={styles.diagnosisList}>
+          {diagnosis.map((diagnosis, idx) => (
+            <li key={idx}>
+              <DiagnoseCard diagnosis={diagnosis} />
+            </li>
+          ))}
+        </ul>
+      </main>
     </>
   );
 }

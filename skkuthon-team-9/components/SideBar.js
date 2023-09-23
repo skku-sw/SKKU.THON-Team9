@@ -5,7 +5,7 @@ import styles from "./SideBar.module.css";
 const SideBar = () => {
   return (
     <section className={styles.sidebar}>
-      <div>
+      <div className={styles.wrapper}>
         <div className={styles.profileImg}>
           <Image
             layout="responsive"
