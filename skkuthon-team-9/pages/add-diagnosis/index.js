@@ -46,6 +46,7 @@ const AddDiagnosis = () => {
 
   return (
     <form className={styles.form}>
+      <h4>진단서 작성표</h4>
       <div>
         <label htmlFor="doc-num">의사 면허 번호</label>
         <input id="doc-num" type="text" ref={ref1} />
