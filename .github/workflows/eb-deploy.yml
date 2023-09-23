@@ -56,4 +56,4 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ v4ZXknputWNUtPNPPYXwytKP/ybnRV70PqUkKL+O }}
         AWS_REGION: ap-northeast-2
         SOURCE_DIR: './artifacts'
-        DEST_DIR: 'backend
+        DEST_DIR: 'backend'
