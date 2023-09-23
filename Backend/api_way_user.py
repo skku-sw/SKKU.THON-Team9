@@ -145,6 +145,7 @@ def logout():
         return jsonify({"msg": e}), 400
 
 
-@user_api.route("/home", methods=["GET"])
+@user_api.route("/find_medical_history", methods=["GET"])
+@jwt_required()
 def some_function():
     return jsonify("Hello")

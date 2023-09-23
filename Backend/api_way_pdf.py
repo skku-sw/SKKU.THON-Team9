@@ -145,6 +145,11 @@ def generate_and_upload():
                             paragraph.clear()
                             run = paragraph.add_run(text)
                             run.bold = True
+                        elif "{12}" in paragraph.text:
+                            text = paragraph.text.replace("{12}", user.patient_id)
+                            paragraph.clear()
+                            paragraph.add_run(text)
+                      
 
         # 5. Word 문서 임시 저장
         temp_docx_path = "temp.docx"
@@ -153,20 +158,21 @@ def generate_and_upload():
         temp_pdf_path = f"{medical_history.patient_id}_{medical_history.license_number}_{medical_history.diagnosis_date}.pdf"
         convert(temp_docx_path, temp_pdf_path)
         # 7. PDF를 S3에 업로드
-        # with open(temp_pdf_path,"rb") as file:
-        #     s3_client.upload_fileobj(file,s3_bucket_name,"image/"+temp_pdf_path)
+        with open(temp_pdf_path, "rb") as file:
+            s3_client.upload_fileobj(file, s3_bucket_name, "image/" + temp_pdf_path)
 
         # DB 저장
-        # medical_history.filename = image_path+"image/"+temp_pdf_path
-        # from app import db_session
-        # db_session.merge(doctor)
-        # db_session.commit()
-        # db_session.merge(medical_history)
-        # db_session.commit()
+        medical_history.filename = image_path + "image/" + temp_pdf_path
+        from app import db_session
+
+        db_session.merge(doctor)
+        db_session.commit()
+        db_session.merge(medical_history)
+        db_session.commit()
 
         # 8. 파일 기록 지우기
         os.remove(temp_docx_path)
-        # os.remove(temp_pdf_path)
+        os.remove(temp_pdf_path)
         return jsonify({"msg": "Upload Success"}), 200
     except Exception as e:
         return jsonify({"msg": str(e)}), 401

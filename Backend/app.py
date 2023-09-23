@@ -19,7 +19,6 @@ jwt = JWTManager(app)
 db_session = initialize_db(app)
 
 app.register_blueprint(user_api, url_prefix="/user")
-app.register_blueprint(medical_api, url_prefix="/medical")
 app.register_blueprint(pdf_api, url_prefix="/pdf")
 
 if __name__ == "__main__":
