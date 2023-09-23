@@ -2,7 +2,6 @@
 from flask import Flask
 from db_model import initialize_db
 from api_way_user import user_api
-from api_way_medical import medical_api
 from api_way_pdf import pdf_api
 from flask_jwt_extended import JWTManager
 

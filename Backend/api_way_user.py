@@ -147,5 +147,33 @@ def logout():
 
 @user_api.route("/find_medical_history", methods=["GET"])
 @jwt_required()
-def some_function():
-    return jsonify("Hello")
+def find_medical_history():
+    # 현재 로그인된 사용자의 ID 가져오기
+    current_user_id = get_jwt_identity()
+
+    # 해당 ID를 사용하여 사용자의 정보를 가져옴
+    user = UserInfo.query.filter_by(patient_id=current_user_id).first()
+
+    if not user:
+        return jsonify({"msg": "User not found"}), 404
+
+    # 사용자의 Medical History 가져오기
+    medical_histories = user.medical_histories
+    # Medical History 및 관련된 의사 정보를 결과 리스트에 추가
+    result = []
+    for history in medical_histories:
+        doctor = history.doctor
+        result.append(
+            {
+                "diagnosis_code": history.diagnosis_code,
+                "onset_date": history.onset_date,
+                "diagnosis_date": history.diagnosis_date,
+                "prognosis": history.prognosis,
+                "hospitalization_dates": history.hospitalization_dates,
+                "filename": history.filename,
+                "doctor_name": doctor.doctor_name,
+                "medical_institution": doctor.medical_institution,
+            }
+        )
+
+    return jsonify(result)

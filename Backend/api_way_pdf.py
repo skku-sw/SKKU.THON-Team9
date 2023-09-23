@@ -176,3 +176,4 @@ def generate_and_upload():
         return jsonify({"msg": "Upload Success"}), 200
     except Exception as e:
         return jsonify({"msg": str(e)}), 401
+
