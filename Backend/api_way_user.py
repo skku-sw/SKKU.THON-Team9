@@ -150,6 +150,8 @@ def logout():
 def find_medical_history():
     # 현재 로그인된 사용자의 ID 가져오기
     current_user_id = get_jwt_identity()
+    current_user_id = "000001-0000000"
+
 
     # 해당 ID를 사용하여 사용자의 정보를 가져옴
     user = UserInfo.query.filter_by(patient_id=current_user_id).first()
